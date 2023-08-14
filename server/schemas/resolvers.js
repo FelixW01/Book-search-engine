@@ -5,6 +5,7 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
+    // queries for the current user information
     me: async (parent, args, context) =>
     {
         if (context.user) {
@@ -15,6 +16,7 @@ const resolvers = {
     },
  },
   Mutations: {
+    // login mutation, find by email if !email, then user is nonexistent, assigns a token when successfull.
     login: async ( parent, { email, password } ) => {
         const user = await User.findOne({ email });
 
@@ -30,11 +32,13 @@ const resolvers = {
         const token = signToken(user);
         return { token, user };
     },
+    // addUser mutation, creates a user by username, email and password
     addUser: async (parent, {username, email, password}) => {
         const user = await User.create({ username, email, password });
         const token = signToken(user);
         return { token, user };
     },
+    // saveBook mutation, find user by id, push newBook to it's savedBooks array
     saveBook: async (parent, { newBook }, context) => {
         if (context.user) {
             const updatedUser = await User.findByIdAndUpdate(
@@ -45,6 +49,7 @@ const resolvers = {
             return updatedUser;
         }
     },
+    // removeBook mutation, find user by id, pull book from it's savedBooks array by bookId
     removeBook: async (parent, { newBook }, context) => {
         if (context.user) {
             const updatedUser = await User.findByIdAndDelete(
