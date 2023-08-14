@@ -33,9 +33,9 @@ const resolvers = {
     addUser: async (parent, {username, email, password}) => {
         const user = await User.create({ username, email, password });
         const token = signToken(user);
-        return { token, user }
+        return { token, user };
     },
-    saveBook: async (parent, { newBook }, context => {
+    saveBook: async (parent, { newBook }, context) => {
         if (context.user) {
             const updatedUser = await User.findByIdAndUpdate(
                 { _id: context.user._id },
@@ -44,10 +44,19 @@ const resolvers = {
             );
             return updatedUser;
         }
-    })
-    removeBook
-
-  }
+    },
+    removeBook: async (parent, { newBook }, context) => {
+        if (context.user) {
+            const updatedUser = await User.findByIdAndDelete(
+                {_id: context.user._id},
+                {$pull: { savedBooks: bookId}},
+                {new: true}
+            )
+            return updatedUser;
+        }
+        throw new AuthenticationError("Please log in to remove!")
+    },
+  },
 };
 
 module.exports = resolvers;
