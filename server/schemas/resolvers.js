@@ -15,7 +15,7 @@ const resolvers = {
         throw new AuthenticationError('Not logged in!')
     },
  },
-  Mutations: {
+  Mutation: {
     // login mutation, find by email if !email, then user is nonexistent, assigns a token when successfull.
     login: async ( parent, { email, password } ) => {
         const user = await User.findOne({ email });
