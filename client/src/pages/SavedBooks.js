@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import {
   Container,
   Card,
@@ -27,12 +26,12 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook({variables: bookId});
+      await deleteBook({variables: bookId});
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
+      if (error) {
+        console.log(error)
       }
-      
+
       //removes book from localstorage
       removeBookId(bookId)
     } catch (err) {
