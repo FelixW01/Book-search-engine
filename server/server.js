@@ -13,7 +13,8 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-})
+  // context: authMiddleware
+  })
   
 const startApolloServer = async () => {
   await server.start();
@@ -34,6 +35,8 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   }
+    
+  
 
   db.once('open', () => {
     app.listen(PORT, () => {
@@ -44,7 +47,6 @@ const startApolloServer = async () => {
 }
   
   // app.use(routes);
-  
 startApolloServer();
 
 

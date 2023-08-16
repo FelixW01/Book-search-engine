@@ -13,11 +13,9 @@ import { REMOVE_BOOK } from '../utils/mutations'
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
-  const [deleteBook, {error}] = useMutation(REMOVE_BOOK, {refetchQueries: [
-    GET_ME
-  ]});
+  const [deleteBook, {error}] = useMutation(REMOVE_BOOK);
   const userData = data?.me || {};
-
+  // console.log(userData, ("<<<<< USERDATA"))
   
   // deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -28,7 +26,7 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({variables: {bookId}});
+      await deleteBook({variables: { bookId } });
       //removes book from localstorage
       removeBookId(bookId)
     } catch (err) {
