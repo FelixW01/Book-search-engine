@@ -13,7 +13,9 @@ import { REMOVE_BOOK } from '../utils/mutations'
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
-  const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
+  const [deleteBook, {error}] = useMutation(REMOVE_BOOK, {refetchQueries: [
+    GET_ME
+  ]});
   const userData = data?.me || {};
 
   
@@ -26,12 +28,7 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({variables: bookId});
-
-      if (error) {
-        console.log(error)
-      }
-
+      await deleteBook({variables: {bookId}});
       //removes book from localstorage
       removeBookId(bookId)
     } catch (err) {
@@ -42,6 +39,9 @@ const SavedBooks = () => {
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
+  }
+  if (error) {
+    console.error(error);
   }
 
   return (
