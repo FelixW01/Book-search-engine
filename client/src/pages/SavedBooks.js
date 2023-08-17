@@ -13,9 +13,13 @@ import { REMOVE_BOOK } from '../utils/mutations'
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
-  const [deleteBook, {error}] = useMutation(REMOVE_BOOK);
+  const [deleteBook, {error}] = useMutation(REMOVE_BOOK, {
+    refetchQueries: [
+      GET_ME,
+      'me'
+    ]
+  });
   const userData = data?.me || {};
-  console.log(userData, ("<<<<< USERDATA"))
   
   // deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -26,9 +30,13 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({variables: { bookId } });
+      const {data} = await deleteBook({
+        variables: { bookId }
+      })
+
       //removes book from localstorage
       removeBookId(bookId)
+      // window.location.reload();
     } catch (err) {
       console.error(err);
     }
@@ -38,13 +46,10 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-  if (error) {
-    console.error(error);
-  }
 
   return (
     <>
-      <div fluid className='text-light bg-dark p-5'>
+      <div className='text-light bg-dark p-5'>
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
@@ -59,8 +64,8 @@ const SavedBooks = () => {
         {console.log(userData.savedBooks, "<<<<<< saved books")}
           {userData.savedBooks?.map((book) => {
             return (
-              <Col md="4">
-                <Card key={book.bookId} border='dark'>
+              <Col key={book.bookId} md="4">
+                <Card  border='dark'>
                   {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
