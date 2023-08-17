@@ -13,6 +13,7 @@ import { REMOVE_BOOK } from '../utils/mutations'
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
+  // uses the REMOVE_BOOK mutation, refetch queries to refresh the dom dynamically
   const [deleteBook, {error}] = useMutation(REMOVE_BOOK, {
     refetchQueries: [
       GET_ME,
@@ -29,6 +30,7 @@ const SavedBooks = () => {
       return false;
     }
 
+    // returns bookId, runs the deleteBook mutation.
     try {
       const {data} = await deleteBook({
         variables: { bookId }
