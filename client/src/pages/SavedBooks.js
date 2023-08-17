@@ -56,7 +56,7 @@ const SavedBooks = () => {
             : 'You have no saved books!'}
         </h2>
         <Row>
-        {console.log(userData.savedBooks)}
+        {console.log(userData.savedBooks, "<<<<<< saved books")}
           {userData.savedBooks?.map((book) => {
             return (
               <Col md="4">
