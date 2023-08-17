@@ -15,7 +15,7 @@ const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
   const [deleteBook, {error}] = useMutation(REMOVE_BOOK);
   const userData = data?.me || {};
-  // console.log(userData, ("<<<<< USERDATA"))
+  console.log(userData, ("<<<<< USERDATA"))
   
   // deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -51,12 +51,13 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks.length
+          {loading
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <Row>
-          {userData.savedBooks.map((book) => {
+        {console.log(userData.savedBooks)}
+          {userData.savedBooks?.map((book) => {
             return (
               <Col md="4">
                 <Card key={book.bookId} border='dark'>
