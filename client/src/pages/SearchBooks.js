@@ -9,11 +9,10 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { useMutation } from '@apollo/react-hooks'
 import { SAVE_BOOK } from '../utils/mutations';
-import { GET_ME } from '../utils/queries';
 
 
 const SearchBooks = () => {
@@ -78,15 +77,11 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook({
+      const { data } = await saveBook({
         variables: {
-          input: bookToSave
+          newBook: bookToSave
         },
       });
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
@@ -94,7 +89,6 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
-
   return (
     <>
       <div className='text-light bg-dark pt-5'>
@@ -131,8 +125,8 @@ const SearchBooks = () => {
         <Row>
           {searchedBooks.map((book) => {
             return (
-              <Col md="4">
-                <Card key={book.bookId} border='dark'>
+              <Col key={book.bookId} md="4">
+                <Card  border='dark'>
                   {book.image ? (
                     <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
                   ) : null}

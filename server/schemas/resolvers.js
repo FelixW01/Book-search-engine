@@ -1,5 +1,4 @@
 
-const { saveBook } = require('../controllers/user-controller');
 const { User } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
@@ -8,9 +7,12 @@ const resolvers = {
     // queries for the current user information
     me: async (parent, args, context) =>
     {
+        //context.user is undefined, crashing savedBooks whenever it's referenced
+        console.log(context.user, "<<<<<<<<<<<<<< ME CONTEXT.USER")
         if (context.user) {
-            const userData = await User.findOne({_id: context.user._id}).select('-__v -password')
-            return userData;
+            const user = await User.findOne({_id: context.user._id})
+            console.log(user, "<<<<<<<<<<<<<< USER")
+            return user;
         }
         throw new AuthenticationError('Not logged in!')
     },
@@ -43,18 +45,18 @@ const resolvers = {
         if (context.user) {
             const updatedUser = await User.findByIdAndUpdate(
                 { _id: context.user._id },
-                { $push: { savedBooks: newBook }},
+                { $addToSet: { savedBooks: newBook }},
                 { new: true }
             );
             return updatedUser;
         }
     },
     // removeBook mutation, find user by id, pull book from it's savedBooks array by bookId
-    removeBook: async (parent, { newBook }, context) => {
+    removeBook: async (parent, { bookId }, context) => {
         if (context.user) {
             const updatedUser = await User.findByIdAndDelete(
                 {_id: context.user._id},
-                {$pull: { savedBooks: bookId}},
+                {$pull: { savedBooks: {bookId}}},
                 {new: true}
             )
             return updatedUser;
