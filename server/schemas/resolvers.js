@@ -7,11 +7,8 @@ const resolvers = {
     // queries for the current user information
     me: async (parent, args, context) =>
     {
-        //context.user is undefined, crashing savedBooks whenever it's referenced
-        console.log(context.user, "<<<<<<<<<<<<<< ME CONTEXT.USER")
         if (context.user) {
             const user = await User.findOne({_id: context.user._id})
-            console.log(user, "<<<<<<<<<<<<<< USER")
             return user;
         }
         throw new AuthenticationError('Not logged in!')
@@ -54,7 +51,7 @@ const resolvers = {
     // removeBook mutation, find user by id, pull book from it's savedBooks array by bookId
     removeBook: async (parent, { bookId }, context) => {
         if (context.user) {
-            const updatedUser = await User.findByIdAndDelete(
+            const updatedUser = await User.findByIdAndUpdate(
                 {_id: context.user._id},
                 {$pull: { savedBooks: {bookId}}},
                 {new: true}
