@@ -7,11 +7,8 @@ const resolvers = {
     // queries for the current user information
     me: async (parent, args, context) =>
     {
-        //context.user is undefined, crashing savedBooks whenever it's referenced
-        console.log(context.user, "<<<<<<<<<<<<<< ME CONTEXT.USER")
         if (context.user) {
             const user = await User.findOne({_id: context.user._id})
-            console.log(user, "<<<<<<<<<<<<<< USER")
             return user;
         }
         throw new AuthenticationError('Not logged in!')

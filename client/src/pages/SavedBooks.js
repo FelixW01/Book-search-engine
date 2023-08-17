@@ -36,7 +36,6 @@ const SavedBooks = () => {
 
       //removes book from localstorage
       removeBookId(bookId)
-      // window.location.reload();
     } catch (err) {
       console.error(err);
     }
@@ -45,6 +44,9 @@ const SavedBooks = () => {
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
+  }
+  if(error) {
+    return(error)
   }
 
   return (
@@ -61,7 +63,6 @@ const SavedBooks = () => {
             : 'You have no saved books!'}
         </h2>
         <Row>
-        {console.log(userData.savedBooks, "<<<<<< saved books")}
           {userData.savedBooks?.map((book) => {
             return (
               <Col key={book.bookId} md="4">
