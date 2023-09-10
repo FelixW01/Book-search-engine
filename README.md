@@ -6,7 +6,7 @@ https://book-collection-app-d39d5d960757.herokuapp.com/
 
 # Description
 
-This is a full stack app utilizing the google search API to serve book information. This app was created as a platform to serve users that is in need of searching books by a specific title.
+This is a full stack app utilizing the google search API to serve book information from the google search API. This app was created as a platform to serve users that is in need of searching books by a specific title.
 Users will be able to query, save and delete books inside their own personal saved book page. The purpose of creating this app was to deeper my understanding in GraphQL and how it interacts with React and express
 along with other technologies.
 
