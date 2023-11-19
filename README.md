@@ -1,9 +1,6 @@
 # Book Search Engine
 https://github.com/FelixW01/book-search-engine
 
-# Live Repo
-https://book-collection-app-d39d5d960757.herokuapp.com/
-
 # Description
 
 This is a full stack app utilizing the google search API to serve book information from the google search API. This app was created as a platform to serve users that is in need of searching books by a specific title.
